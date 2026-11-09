@@ -1,0 +1,134 @@
+/* FalaRei: tinta escura, papel quente e um dourado de coroa usado com parcimónia. Claro por defeito, escuro automático. */
+:root {
+  --fundo: #f7f4ee;
+  --painel: #fffdf8;
+  --painel-2: #efe9df;
+  --linha: #e3dccf;
+  --tinta: #16130f;
+  --tinta-2: #554d42;
+  --tinta-3: #8a8174;
+  --ouro: #a86a00;
+  --ouro-suave: #f6e6c4;
+  --ouro-tinta: #ffffff;
+  --verde: #1f7a52;
+  --verde-suave: #dcefe4;
+  --azul: #2c5fb3;
+  --azul-suave: #e1eaf8;
+  --cinza-suave: #ebe6dd;
+  --sombra: 0 1px 2px rgba(22, 19, 15, 0.05), 0 12px 28px -18px rgba(22, 19, 15, 0.22);
+  --raio: 14px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fundo: #12100d; --painel: #1a1712; --painel-2: #221e18; --linha: #2f2a22;
+    --tinta: #f3eee6; --tinta-2: #bdb4a6; --tinta-3: #8b8274;
+    --ouro: #f0b445; --ouro-suave: #3a2c12; --ouro-tinta: #16130f;
+    --verde: #5fc995; --verde-suave: #16301f; --azul: #8cb2ff; --azul-suave: #182540; --cinza-suave: #26221b;
+    --sombra: 0 1px 2px rgba(0, 0, 0, 0.3), 0 14px 30px -18px rgba(0, 0, 0, 0.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fundo: #12100d; --painel: #1a1712; --painel-2: #221e18; --linha: #2f2a22;
+  --tinta: #f3eee6; --tinta-2: #bdb4a6; --tinta-3: #8b8274;
+  --ouro: #f0b445; --ouro-suave: #3a2c12; --ouro-tinta: #16130f;
+  --verde: #5fc995; --verde-suave: #16301f; --azul: #8cb2ff; --azul-suave: #182540; --cinza-suave: #26221b;
+  --sombra: 0 1px 2px rgba(0, 0, 0, 0.3), 0 14px 30px -18px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--fundo); color: var(--tinta); font: 400 16px/1.6 var(--f-texto), system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--f-titulo), var(--f-texto), sans-serif; text-wrap: balance; letter-spacing: -0.02em; margin: 0; line-height: 1.08; }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--ouro); outline-offset: 3px; border-radius: 6px; }
+
+.largura { width: min(1120px, 100%); margin: 0 auto; padding-inline: 20px; }
+
+/* topo */
+.topo { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--fundo) 86%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--linha); }
+.topo-in { display: flex; align-items: center; gap: 24px; min-height: 60px; flex-wrap: wrap; }
+.marca { display: inline-flex; align-items: center; gap: 10px; font: 700 19px var(--f-titulo), sans-serif; text-decoration: none; letter-spacing: -0.02em; }
+.marca svg { width: 28px; height: 28px; }
+.nav { display: flex; gap: 4px; flex-wrap: wrap; margin-left: auto; }
+.nav a { text-decoration: none; color: var(--tinta-2); font-size: 14.5px; font-weight: 500; padding: 6px 12px; border-radius: 999px; }
+.nav a:hover { color: var(--tinta); background: var(--painel-2); }
+
+/* página inicial */
+.heroi { padding-block: 88px 56px; }
+.heroi .sobre { font: 600 12.5px/1 var(--f-mono), monospace; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ouro); margin-bottom: 18px; }
+.heroi h1 { font-size: clamp(44px, 8vw, 92px); font-weight: 750; max-width: 12ch; }
+.heroi h1 em { font-style: normal; color: var(--ouro); }
+.heroi .lead { margin-top: 22px; font-size: clamp(17px, 1.8vw, 20px); color: var(--tinta-2); max-width: 54ch; }
+
+.secao { padding-block: 40px 64px; }
+.secao-titulo { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.secao-titulo h2 { font-size: 26px; font-weight: 700; }
+.secao-titulo p { color: var(--tinta-3); font-size: 14.5px; }
+
+.categorias { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.categoria { display: flex; flex-direction: column; gap: 6px; padding: 18px; border-radius: var(--raio); border: 1px solid var(--linha); background: var(--painel); text-decoration: none; transition: border-color 0.15s, transform 0.15s; min-width: 0; }
+.categoria:hover { border-color: var(--ouro); transform: translateY(-2px); }
+.categoria b { font: 700 18px var(--f-titulo), sans-serif; }
+.categoria span { color: var(--tinta-2); font-size: 14px; }
+.categoria small { margin-top: auto; padding-top: 10px; font: 500 12.5px var(--f-mono), monospace; color: var(--tinta-3); }
+
+.grelha { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.cartao { display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: var(--raio); background: var(--painel); border: 1px solid var(--linha); box-shadow: var(--sombra); min-width: 0; }
+.cartao-topo { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.cartao h3 { font-size: 22px; font-weight: 700; }
+.cartao h3 a { text-decoration: none; }
+.cartao h3 a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.cartao p { color: var(--tinta-2); font-size: 15px; }
+.cartao .acoes { margin-top: auto; }
+.cat-mini { font: 500 12px var(--f-mono), monospace; color: var(--tinta-3); text-transform: uppercase; letter-spacing: 0.08em; }
+
+.estado { display: inline-flex; align-items: center; gap: 6px; font: 600 12px var(--f-texto), sans-serif; padding: 4px 10px; border-radius: 999px; background: var(--cinza-suave); color: var(--tinta-2); white-space: nowrap; }
+.estado i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.estado.n2, .estado.n3 { background: var(--azul-suave); color: var(--azul); }
+.estado.n4 { background: var(--verde-suave); color: var(--verde); }
+.estado.n2 i, .estado.n3 i { animation: pisca 1.6s ease-in-out infinite; }
+@keyframes pisca { 50% { opacity: 0.3; } }
+
+.acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font: 600 15px var(--f-texto), sans-serif; text-decoration: none; border: 1px solid var(--linha); background: var(--painel); color: var(--tinta); }
+.btn:hover { border-color: var(--tinta-3); }
+.btn.primario { background: var(--ouro); border-color: var(--ouro); color: var(--ouro-tinta); }
+.btn.primario:hover { filter: brightness(1.06); }
+
+.vazio { padding: 28px; border-radius: var(--raio); border: 1px dashed var(--linha); color: var(--tinta-2); text-align: center; }
+
+/* página do projeto */
+.projeto { padding-block: 56px 72px; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.projeto h1 { font-size: clamp(38px, 6vw, 64px); font-weight: 750; margin: 14px 0 18px; }
+.projeto .lead { font-size: 19px; color: var(--tinta-2); max-width: 56ch; }
+.projeto .acoes { margin-top: 28px; }
+.ficha { padding: 22px; border-radius: var(--raio); background: var(--painel); border: 1px solid var(--linha); display: grid; gap: 18px; }
+.ficha dl { margin: 0; display: grid; gap: 14px; }
+.ficha .rotulo, .ficha dt { font: 600 12px var(--f-mono), monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--tinta-3); margin-bottom: 4px; }
+.ficha dd { margin: 0; font-size: 15px; }
+.ficha ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.etiquetas { display: flex; flex-wrap: wrap; gap: 6px; }
+.etiquetas span { font-size: 13px; padding: 3px 9px; border-radius: 6px; background: var(--painel-2); color: var(--tinta-2); }
+.migalhas { font-size: 14px; color: var(--tinta-3); }
+.migalhas a { color: var(--tinta-2); }
+
+.progresso { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.progresso i { height: 6px; border-radius: 3px; background: var(--painel-2); }
+.progresso i.feito { background: var(--ouro); }
+.progresso-rotulos { display: flex; justify-content: space-between; font: 500 11.5px var(--f-mono), monospace; color: var(--tinta-3); margin-top: 6px; }
+
+.rodape { border-top: 1px solid var(--linha); padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); color: var(--tinta-3); font-size: 14px; }
+.rodape .largura { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+@media (max-width: 760px) {
+  .projeto { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .heroi { padding-block: 56px 36px; }
+  .nav { margin-left: 0; width: 100%; padding-bottom: 8px; overflow-x: auto; flex-wrap: nowrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
