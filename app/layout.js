@@ -47,7 +47,9 @@ export default function Layout({ children }) {
         <main>{children}</main>
         <footer className="rodape">
           <div className="largura">
-            <span>© {new Date().getFullYear()} FalaRei</span>
+            <span>
+              © {new Date().getFullYear()} FalaRei · Criado por <b style={{ color: "var(--tinta)" }}>Vladimiro</b>, <b style={{ color: "var(--tinta)" }}>Delcio</b> e <b style={{ color: "var(--tinta)" }}>Luis</b>
+            </span>
             <a href="https://github.com/FalaRei" rel="noopener">GitHub da FalaRei</a>
           </div>
         </footer>
