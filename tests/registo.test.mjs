@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { validarRegisto, rewritesDe, caminhoDe, linkExperimentar, projetos } from "../lib/registo.mjs";
+import { readFileSync } from "node:fs";
+import { validarRegisto, rewritesDe, vercelJsonDe, caminhoDe, linkExperimentar, projetos } from "../lib/registo.mjs";
 
 const base = { name: "Teste", category: "apps", slug: "teste", repository: "teste", status: "development", deployment: "", description: "x", responsaveis: [{ nome: "A" }] };
 
@@ -25,14 +26,16 @@ test("a validação apanha os erros comuns", () => {
 
 test("só os projetos com deployment são reencaminhados, com e sem barra final", () => {
   const r = rewritesDe([base, { ...base, slug: "vivo", deployment: "https://vivo.vercel.app" }]);
-  assert.deepEqual(r, [
-    { source: "/apps/vivo", destination: "https://vivo.vercel.app/" },
-    { source: "/apps/vivo/:caminho*", destination: "https://vivo.vercel.app/:caminho*" },
-  ]);
+  assert.deepEqual(r, [{ source: "/apps/vivo/(.*)", destination: "https://vivo.vercel.app/$1" }]);
 });
 
 test("caminhos públicos e link para experimentar", () => {
   assert.equal(caminhoDe(base), "/apps/teste/");
   assert.equal(linkExperimentar(base), null);
   assert.equal(linkExperimentar({ ...base, deployment: "https://t.vercel.app", tryPath: "app/" }), "/apps/teste/app/");
+});
+
+
+test("o vercel.json está em sincronia com o registo (senão: npm run rotas)", () => {
+  assert.deepEqual(JSON.parse(readFileSync("vercel.json", "utf8")), vercelJsonDe());
 });

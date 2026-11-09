@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/apps/sentinelabot",
+      "destination": "/apps/sentinelabot/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/apps/sentinelabot/(.*)",
+      "destination": "https://sentinelabot.vercel.app/$1"
+    }
+  ]
+}

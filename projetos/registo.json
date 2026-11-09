@@ -5,7 +5,7 @@
     "slug": "sentinelabot",
     "repository": "sentinelabot",
     "status": "teste",
-    "deployment": "",
+    "deployment": "https://sentinelabot.vercel.app",
     "tryPath": "app/",
     "description": "Copiloto de disciplina para traders. Vê o gráfico, fala contigo e avisa-te antes de quebrares uma regra do teu desafio.",
     "responsaveis": [{ "nome": "vladimirolilotech", "papel": "Produto e desenvolvimento", "github": "vladimirolilotech" }],
