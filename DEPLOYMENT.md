@@ -17,7 +17,7 @@ Este guia é para quem entra na equipa. Não precisas de conhecer a arquitetura 
 
 - **`falarei-platform`** (este repositório) é a porta de entrada: página inicial, catálogo, páginas de apresentação e as regras de encaminhamento.
 - **Cada projeto tem o seu repositório, o seu projeto na Vercel, a sua tecnologia, a sua base de dados e a sua equipa.**
-- A ligação entre os dois é **uma entrada em `projetos/registo.json`**. Quando essa entrada tem `deployment`, a Vercel passa a servir `falarei.online/<categoria>/<slug>/` a partir do deployment do projeto (rewrite). O visitante vê sempre `falarei.online`.
+- A ligação entre os dois é **uma entrada em `projetos/registo.json`**. Quando essa entrada tem `deployment`, `npm run rotas` escreve no `vercel.json` uma regra que serve `falarei.online/<categoria>/<slug>/` a partir do deployment do projeto (rewrite na rede da Vercel). O visitante vê sempre `falarei.online`.
 
 ### Porque rewrites e não Microfrontends (decisão de novembro de 2026)
 
@@ -96,8 +96,9 @@ Edita `projetos/registo.json` neste repositório:
 Depois:
 
 ```bash
-npm run validar   # confirma o registo e mostra as regras de encaminhamento
-npm test
+npm run validar   # confirma o registo
+npm run rotas     # atualiza o vercel.json com as regras de encaminhamento
+npm test          # falha se te esqueceres do passo anterior
 git commit -am "Regista o projeto X" && git push
 ```
 
@@ -105,7 +106,7 @@ O projeto aparece sozinho na página inicial, na categoria e em `/projetos/<slug
 
 ## 4. Adicionar uma rota
 
-Não há rotas para escrever à mão: cada entrada com `deployment` gera duas regras (`/<categoria>/<slug>` e `/<categoria>/<slug>/:caminho*`) em `next.config.mjs`. Para **uma categoria nova**, junta-a a `CATEGORIAS` em `lib/registo.mjs`: o menu e a página da categoria aparecem sozinhos.
+Não há rotas para escrever à mão: cada entrada com `deployment` gera, com `npm run rotas`, um redirect (`/<categoria>/<slug>` → `/<categoria>/<slug>/`) e um rewrite (`/<categoria>/<slug>/(.*)` → `<deployment>/$1`) no `vercel.json`. Ficam no `vercel.json` e não no `next.config.mjs` porque a Vercel os aplica na rede, antes do Next.js, e assim o caminho passa intacto, incluindo a barra final (com `:caminho*`, a barra final perdia-se e a app do projeto abria no sítio errado). Para **uma categoria nova**, junta-a a `CATEGORIAS` em `lib/registo.mjs`: o menu e a página da categoria aparecem sozinhos.
 
 ## 5. Configurar o domínio `falarei.online`
 
@@ -113,8 +114,16 @@ Só depois de o domínio estar comprado:
 
 1. Vercel → projeto **falarei-platform** → **Settings → Domains** → adiciona `falarei.online`.
 2. Adiciona também `www.falarei.online` e escolhe **Redirect to falarei.online** (308). O `next.config.mjs` faz o mesmo redirecionamento como rede de segurança.
-3. A Vercel mostra os registos DNS exatos. **Copia os valores que a Vercel te mostrar**, não os de um tutorial: normalmente um registo `A` para `falarei.online` e um `CNAME` para `www`, ou então mudar os nameservers para os da Vercel.
-4. Cria-os no painel do sítio onde compraste o domínio. A propagação demora de minutos a 48 h.
+3. A Vercel mostra os registos DNS exatos (`vercel domains verify falarei.online`). **Copia sempre os valores que a Vercel mostrar.** Em novembro de 2026 eram estes:
+
+   | Tipo | Nome | Valor |
+   |---|---|---|
+   | A | `@` | `216.198.79.1` |
+   | A | `@` | `64.29.17.1` |
+   | CNAME | `www` | `c61ab4ecd9c87b09.vercel-dns-017.com.` |
+
+   Alternativa mais simples: trocar os *nameservers* do domínio para `ns1.vercel-dns.com` e `ns2.vercel-dns.com` (a Vercel passa a gerir o DNS todo).
+4. **Hostinger** (onde o domínio foi comprado): hPanel → **Domínios** → `falarei.online` → **DNS / Nameservers**. Apaga o registo `A` de estacionamento (`2.57.91.91`) e qualquer `CNAME` antigo de `www`, e cria os de cima. A propagação demora de minutos a 48 h.
 5. Quando a Vercel mostrar **Valid Configuration**, o certificado HTTPS é emitido sozinho. Confirma abrindo `https://falarei.online`.
 
 Pela CLI (depois de `vercel login`): `vercel domains add falarei.online` e `vercel domains inspect falarei.online`.
